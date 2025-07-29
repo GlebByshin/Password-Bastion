@@ -1,0 +1,16 @@
+.button {
+    -fx-background-color: #aa5f79; /* Цвет фона */
+    -fx-background-radius: 20;     /* Закругление углов */
+    -fx-text-fill: white;          /* Цвет текста */
+}
+#signinButton{
+    -fx-background-color: #3498db; /* Цвет фона */
+    -fx-background-radius: 20;     /* Закругление углов */
+    -fx-text-fill: white;
+}
+.table-view{
+    -fx-border-radius: 20;
+    -fx-background-color: #3498db; /* Цвет фона */
+}
+
+

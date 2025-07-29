@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #ceeddf;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="todo.passwordbastion.Controllers.MenuController">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="341.0" layoutY="34.0" prefHeight="54.0" prefWidth="319.0" text="Your Passwords" textAlignment="CENTER" textFill="#322e2e">
+         <font>
+            <Font name="Mongolian Baiti" size="39.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+            </Lighting>
+         </effect>
+      </Label>
+      <TableView fx:id="table" layoutX="77.0" layoutY="131.0" prefHeight="400.0" prefWidth="850.0" stylesheets="@../styles.css">
+        <columns>
+          <TableColumn fx:id="serviceColumn" prefWidth="425.0" text="Service" />
+          <TableColumn fx:id="passwordCollumn" prefWidth="425.0" text="Password" />
+        </columns>
+      </TableView>
+   </children>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
+</Pane>
