@@ -1,45 +1,135 @@
 package todo.passwordbastion.Controllers;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
+import todo.passwordbastion.Config.Config;
+import todo.passwordbastion.database.DAO;
 import todo.passwordbastion.models.Password;
 
+@Component
 public class MenuController {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private TableColumn<Password, String> passwordCollumn;
-
-    @FXML
-    private TableColumn<Password, String> serviceColumn;
 
     @FXML
     private TableView<Password> table;
 
     @FXML
+    private TableColumn<Password, String> serviceColumn;
+
+    @FXML
+    private TableColumn<Password, String> passwordCollumn;
+
+    @FXML
+    private Button editPassword;
+
+    @FXML
+    private Button deletePassword;
+
+    @FXML
+    private Button addPassword;
+
+    @FXML
+    private Pane addingPasswordPane;
+
+    @FXML
+    private TextField serviceFieldAdd;
+
+    @FXML
+    private PasswordField passwordFieldAdd;
+
+    @FXML
+    private Button submitAdd;
+
+    @FXML
+    private Pane editingPane;
+
+    @FXML
+    private TextField serviceFieldEdit;
+
+    @FXML
+    private PasswordField passwordFieldEdit;
+
+    @FXML
+    private Button submitEdit;
+
+    private ObservableList<Password> passwords;
+
+    @FXML
     void initialize() {
-        ObservableList<Password> passwords = FXCollections.observableArrayList(
-                new Password("Zamay86","Spotify"),
-                new Password("Slava","Apple"),
-                new Password("Rachev","God"),
-                new Password("Love","Stacy")
-        );
-        passwordCollumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+        DAO dao = context.getBean("dao", DAO.class);
+        passwords = dao.getPasswords();
         serviceColumn.setCellValueFactory(new PropertyValueFactory<>("service"));
+        passwordCollumn.setCellValueFactory(new PropertyValueFactory<>("password"));
         table.setItems(passwords);
     }
 
+    @FXML
+    void test(MouseEvent event) {
+        Password selectedPassword = table.getSelectionModel().getSelectedItem();
+        if (selectedPassword != null) {
+            editPassword.setVisible(true);
+            deletePassword.setVisible(true);
+            System.out.println("Selected Service: " + selectedPassword.getService());
+            System.out.println("Selected Password: " + selectedPassword.getPassword());
+        } else {
+            System.out.println("No row selected.");
+        }
+    }
+
+    @FXML
+    void addPassword() {
+        addingPasswordPane.setVisible(true);
+    }
+
+    @FXML
+    void addPasswordToDb() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+        DAO dao = context.getBean("dao", DAO.class);
+        dao.addPassword(new Password(serviceFieldAdd.getText(), passwordFieldAdd.getText()));
+        addingPasswordPane.setVisible(false);
+        passwords.add(new Password(serviceFieldAdd.getText(), passwordFieldAdd.getText()));
+    }
+
+    @FXML
+    void deletePassword() {
+        Password selectedPassword = table.getSelectionModel().getSelectedItem();
+        if (selectedPassword != null) {
+            AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+            DAO dao = context.getBean("dao", DAO.class);
+            dao.deletePassword(selectedPassword);
+            passwords.remove(selectedPassword);
+        } else {
+            System.out.println("No row selected.");
+        }
+    }
+
+    @FXML
+    void editPassword() {
+        Password selectedPassword = table.getSelectionModel().getSelectedItem();
+        if (selectedPassword != null) {
+            editingPane.setVisible(true);
+            serviceFieldEdit.setText(selectedPassword.getService());
+            passwordFieldEdit.setText(selectedPassword.getPassword());
+        }
+    }
+
+    @FXML
+    void submitEdit() {
+        Password selectedPassword = table.getSelectionModel().getSelectedItem();
+        if (selectedPassword != null) {
+            Password newPassword = new Password(serviceFieldEdit.getText(), passwordFieldEdit.getText());
+            AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+            DAO dao = context.getBean("dao", DAO.class);
+            dao.editPassword(selectedPassword, newPassword);
+            passwords.remove(selectedPassword);
+            passwords.add(newPassword);
+            editingPane.setVisible(false);
+        }
+    }
 }

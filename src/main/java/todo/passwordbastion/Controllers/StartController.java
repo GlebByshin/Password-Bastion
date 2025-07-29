@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import todo.passwordbastion.Cryptography;
 import todo.passwordbastion.Main;
 
+
 public class StartController {
 
     @FXML

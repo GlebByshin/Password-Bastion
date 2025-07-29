@@ -12,5 +12,9 @@
     -fx-border-radius: 20;
     -fx-background-color: #3498db; /* Цвет фона */
 }
+#addPassword{
+    -fx-background-radius: 20;
+    -fx-background-color: #5c7049;
+}
 
 

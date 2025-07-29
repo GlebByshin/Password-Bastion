@@ -1,5 +1,7 @@
 package todo.passwordbastion.models;
 
+import org.springframework.stereotype.Component;
+
 public class Password {
     private String password;
     private String service;
@@ -7,6 +9,7 @@ public class Password {
         this.password = password;
         this.service = service;
     }
+    public Password() {}
 
     public String getService() {
         return service;

@@ -32,9 +32,12 @@ public class PasswordCreatingController {
     void submitPassword(ActionEvent event) {
         String userPassword = password.getText();
         Cryptography cryptography = new Cryptography();
-        String encrypt = cryptography.encryptAndAdd(userPassword);
+        String encrypt;
+        encrypt = Cryptography.encryptAndAddPassword(userPassword);
         System.out.println(encrypt);
         System.out.println(encrypt.equals(userPassword));
+
+        
 
 
     }
