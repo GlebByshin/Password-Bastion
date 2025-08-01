@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 import todo.passwordbastion.Config.Config;
+import todo.passwordbastion.Cryptography;
 import todo.passwordbastion.database.DAO;
 import todo.passwordbastion.models.Password;
 
@@ -64,6 +65,10 @@ public class MenuController {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         DAO dao = context.getBean("dao", DAO.class);
         passwords = dao.getPasswords();
+        for (Password password : passwords) {
+            password.setService(Cryptography.decrypt(password.getService()));
+            password.setPassword(Cryptography.decrypt(password.getPassword()));
+        }
         serviceColumn.setCellValueFactory(new PropertyValueFactory<>("service"));
         passwordCollumn.setCellValueFactory(new PropertyValueFactory<>("password"));
         table.setItems(passwords);
@@ -91,9 +96,9 @@ public class MenuController {
     void addPasswordToDb() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         DAO dao = context.getBean("dao", DAO.class);
-        dao.addPassword(new Password(serviceFieldAdd.getText(), passwordFieldAdd.getText()));
+        dao.addPassword(new Password(passwordFieldAdd.getText(), serviceFieldAdd.getText()));
         addingPasswordPane.setVisible(false);
-        passwords.add(new Password(serviceFieldAdd.getText(), passwordFieldAdd.getText()));
+        passwords.add(new Password(passwordFieldAdd.getText(), serviceFieldAdd.getText()));
     }
 
     @FXML
