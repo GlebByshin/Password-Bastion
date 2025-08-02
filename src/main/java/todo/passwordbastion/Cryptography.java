@@ -2,17 +2,12 @@ package todo.passwordbastion;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Properties;
 
 public class Cryptography {
-    // Ключ должен быть 16 символов (128 бит для AES)
     private static final String SECRET_KEY;
 
     static {
