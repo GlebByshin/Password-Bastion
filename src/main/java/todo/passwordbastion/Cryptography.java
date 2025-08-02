@@ -9,10 +9,26 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Properties;
 
 public class Cryptography {
     // Ключ должен быть 16 символов (128 бит для AES)
-    private static final String SECRET_KEY = "1234567890azamay";
+    private static final String SECRET_KEY;
+
+    static {
+        try {
+            Properties props = new Properties();
+            props.load(Files.newInputStream(Paths.get("src/main/resources/application.properties")));
+            SECRET_KEY = props.getProperty("secret.key");
+            if (SECRET_KEY == null || SECRET_KEY.length() != 16) {
+                throw new IllegalArgumentException("Secret key must be 16 characters long for AES-128");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load secret key", e);
+        }
+    }
+
+
 
     public static String encryptAndAddPassword(String input) {
         try {
